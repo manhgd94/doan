@@ -1,0 +1,107 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use Illuminate\Http\Request;
+
+use Config;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+
+class JobController extends Controller
+{
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('authen');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $json_string = file_get_contents(Config::get('constants.url_api').'jobs');
+        $jobs = json_decode($json_string)->jobs;
+        return view('admin/jobs/index', compact('jobs'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $json_string = file_get_contents(Config::get('constants.url_api').'categories');
+        $categories = json_decode($json_string)->categories;
+        return view('admin/jobs/create', compact('categories'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $url = Config::get('constants.url_api').'jobs/show/' . $id;
+        $json_string = file_get_contents($url);
+        $job = json_decode($json_string)->job;
+        $json_string = file_get_contents(Config::get('constants.url_api').'categories');
+        $categories = json_decode($json_string)->categories;
+        return view('admin/jobs/edit', compact('job', 'categories'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+}
